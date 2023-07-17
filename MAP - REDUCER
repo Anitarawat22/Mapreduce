@@ -1,0 +1,82 @@
+
+
+MAPREDUCE :- Mapreduce is a used to process a huge amount of data. Its takes lot of time only if your data is too huge across the clusters then only mapreduce is a choice.
+
+In mapreduce we have two phase Map and Reduce 
+
+1.Map :- It gives more Parallelism.
+2.Reduce :- aggregration
+
+
+Try doing more work at the mapper end than the reduce beacuse more the mapper than more will be parallelism.
+IF you are doing more work at the reducer end than the mapper end than its is behave like a monolythic system.
+
+
+consider a scenerio 
+
+linkdlm profile view
+
+ID  , FROM MEMBER  , TO- MEMBER
+
+1  , MANASA  , SUMIT
+2  , DEEPA   , SUMIT
+3  , SUMIT   , MANASA
+4  , MANASA  ,  DEEPA
+5  ,DEEPA    , MANASA
+6  , SHILPY  , MANASA
+
+
+
+I WANT TO CHECK HOW MANY PEOPLE VIEWWD THE SUMIT PROFILE, MANASA PROFILE , DEEPA PROFILE
+
+
+THIS IS HOW THE RECORD READER WILL GIVE IT TO THE MAPPER.
+
+
+[0 , [1 , MANASA , SUMIT ]
+[1, [ 2, DEEPA , SUMIT ]
+[2 , [3 , SUMIT, ,MANASA ]
+
+THE ABOVE IS GIVEN TO THE MAPPER
+
+
+(SUMIT ,1)
+(SUMIT ,1
+(MANASA ,1)
+(DEEPA ,1)
+(MANASA ,1)
+
+
+THIS WILL BE SHUFFLED and send to the reducer
+
+so, above key value are shuffled and sorted according to the alphatbetically order and then given to the reducer.
+
+(deepa,1)
+(MANASA ,1)
+(MANASA ,1)
+(MANASA ,1)
+(SUMIT ,1)
+(SUMIT ,1)
+(SUMIT ,1)
+
+
+REDUCER
+
+(DEEPA ,{1})
+(MANASA ,{1,1,1})
+(SUMIT ,{1,1})
+
+OUR REDUCER WILL BE WORKING ON ABOVE
+
+(DEEPA ,1)
+(MANASA ,3)
+(SUMIT,2)
+
+
+
+THIS IS HOW MAP-REDUCE WORK.
+
+QUESTION 1 : -  HOW MANY MAPPERS ARE LAUNCHED AND HOW MANY REDUCER?
+
+MAPPERS :=  NUMBER OF MAPPERS WILL BE EQUAL TO THE NUMBER OF  BLOCKS.
+REDUCER : = NUMBER OF REDUCERS IS CONTROLLED BY THE DEVEOLPER. BY DEFAULT, It IS ONE REDUCER WE CAN EVEN CHANGE IT TO 0 OR CAN INCREASE IT MORE THAN 1.
